@@ -9,14 +9,15 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
-  /* Carousel images - mas mataas */
+  /* Carousel images - auto resize, no black padding */
   .carousel-item img {
-    width:100%;
-    height:60vh;          /* dati 60vh → pinalaki natin */
-    object-fit:cover;
+    width: 100%;
+    height: auto;         /* auto-adjust, walang fixed height */
+    object-fit: contain;  /* ipapakita buong image */
+    background-color: transparent; /* no black bars */
   }
 
-  /* Thumbnails (optional section) */
+  /* Thumbnails */
   .thumbs {
     display:flex;
     gap:8px;
@@ -34,7 +35,7 @@
   }
   .thumbs button img {
     display:block;
-    width:110px;  /* mas malaki rin ang thumbnail */
+    width:110px;
     height:70px;
     object-fit:cover;
   }
@@ -44,7 +45,6 @@
   }
 
   @media (max-width: 576px) {
-    .carousel-item img { height:65vh; } /* mobile version */
     .thumbs button img { width:80px; height:54px; }
   }
 </style>
@@ -57,12 +57,13 @@
 
     <!-- Carousel -->
     <div id="myCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4500" data-bs-wrap="true" data-bs-keyboard="true">
+      
       <!-- Indicators -->
       <div class="carousel-indicators">
-        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true"></button>
+        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1"></button>
+        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2"></button>
+        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="3"></button>
       </div>
 
       <!-- Slides -->
@@ -101,46 +102,42 @@
       </div>
 
       <!-- Controls -->
-      <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev" aria-label="Previous">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
         <span class="visually-hidden">Previous</span>
       </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next" aria-label="Next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
         <span class="visually-hidden">Next</span>
       </button>
     </div>
 
-    <!-- Optional Thumbnails (click to jump to slide) -->
-    <div class="thumbs mt-3" aria-hidden="false">
-      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-label="Goto 1">
+    <!-- Thumbnails -->
+    <div class="thumbs mt-3">
+      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active">
         <img src="https://picsum.photos/id/1018/320/200" alt="Thumb 1">
       </button>
-      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Goto 2">
+      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1">
         <img src="https://picsum.photos/id/1015/320/200" alt="Thumb 2">
       </button>
-      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Goto 3">
+      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2">
         <img src="https://picsum.photos/id/1016/320/200" alt="Thumb 3">
       </button>
-      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="3" aria-label="Goto 4">
+      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="3">
         <img src="https://picsum.photos/id/1025/320/200" alt="Thumb 4">
       </button>
     </div>
   </div>
 
-  <!-- Bootstrap Bundle with Popper (CDN) -->
+  <!-- Bootstrap Bundle with Popper -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
-    // Optional: add active styling for thumbnails when slide changes
     (function() {
       const thumbs = Array.from(document.querySelectorAll('.thumbs button'));
       const carouselEl = document.querySelector('#myCarousel');
-
-      // bootstrap carousel instance
       const carousel = bootstrap.Carousel.getOrCreateInstance(carouselEl);
 
-      // when carousel slides, update active thumbnail
       carouselEl.addEventListener('slid.bs.carousel', (evt) => {
         const newIndex = evt.to;
         thumbs.forEach((b, i) => {
@@ -148,7 +145,6 @@
         });
       });
 
-      // when clicking a thumbnail, mark active immediately (Bootstrap will slide)
       thumbs.forEach((btn, i) => {
         btn.addEventListener('click', () => {
           thumbs.forEach(b => b.classList.remove('active'));
@@ -156,11 +152,7 @@
         });
       });
 
-      // Example: programmatic options you can change via JS
-      carousel.pause();             // pause autoplay; call carousel.cycle() to resume
-      // carousel.cycle();          // start auto-cycling
-      // carousel.to(2);            // jump to index 2 (0-based)
-      // carousel._config.interval = 3000; // change interval (not documented API; prefer re-init)
+      carousel.pause(); // naka-pause default, i-activate via carousel.cycle()
     })();
   </script>
 
